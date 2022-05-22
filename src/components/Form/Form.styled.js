@@ -21,4 +21,5 @@ export const AddContactButton = styled.button`
   display: flex;
   padding: 16px 20px;
   border: none;
+  cursor: pointer;
 `;
