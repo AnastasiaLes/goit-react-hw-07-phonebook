@@ -4,7 +4,7 @@ import { ContactField, FieldName, AddContactButton } from './Form.styled';
 import { nanoid } from 'nanoid';
 import * as yup from 'yup';
 import { useAddContactMutation } from 'redux/contactsSlice';
-// import { toast } from 'react-toastify';
+import swal from 'sweetalert';
 
 const schema = yup.object().shape({
   name: yup.string().required(),
@@ -27,18 +27,18 @@ export function NameField({listOfContacts})  {
       number,
       id: nanoid(),
     };
-//      toast.success('🦄 Wow so easy!', {
-// position: "top-center",
-// autoClose: 5000,
-// hideProgressBar: false,
-// closeOnClick: true,
-// pauseOnHover: true,
-// draggable: true,
-// progress: undefined,
-//      });
+    swal({
+      title: "Contact was added!",
+      icon: "success",
+      button: false,
+});
 
     listOfContacts.find(contact => contact.name === newContact.name)
-      ? alert(`${newContact.name} is already in contacts`)
+      ? swal({
+      title: "Oops!",
+      text: `${newContact.name} is already in contacts`,
+      icon: "error",
+      button: "Ok",})
       : addContact(newContact);
     
     resetForm();
