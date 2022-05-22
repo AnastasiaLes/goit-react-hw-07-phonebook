@@ -4,7 +4,7 @@ import { ContactField, FieldName, AddContactButton } from './Form.styled';
 import { nanoid } from 'nanoid';
 import * as yup from 'yup';
 import { useAddContactMutation } from 'redux/contactsSlice';
-
+import { toast } from 'react-hot-toast';
 
 const schema = yup.object().shape({
   name: yup.string().required(),
@@ -16,9 +16,12 @@ const initialValues = {
   number: '',
 };
 
-export function NameField({onSubmit})  {
-  const [ , {isLoading}] = useAddContactMutation();
 
+
+export function NameField({listOfContacts, onSubmit})  {
+  const [, { isLoading }] = useAddContactMutation();
+  const [addContact] = useAddContactMutation();
+  
   const handleSubmit = (values, { resetForm }) => {
     const { name, number } = values;
     const newContact = {
@@ -26,8 +29,14 @@ export function NameField({onSubmit})  {
       number,
       id: nanoid(),
     };
+    
+    listOfContacts.find(contact => contact.name === newContact.name)
+      ? alert(`${newContact.name} is already in contacts`)
+      : addContact(newContact);
+    
     resetForm();
-    onSubmit(newContact);
+    
+    toast.success('Contact was added!');
   };
 
   const nameInputId = nanoid();
@@ -48,7 +57,11 @@ export function NameField({onSubmit})  {
           <ContactField type="tel" name="number" id={numberInputId} />
           <ErrorMessage name="number" component="div" />
 
-          <AddContactButton type="submit" disabled={isLoading}> {isLoading ? '...' : 'Add contact'}  </AddContactButton>
+        <AddContactButton type="submit" disabled={isLoading}> {
+          isLoading
+            ? '...'
+            : 'Add contact'}
+        </AddContactButton>
         </Form>
       </Formik>
     );
