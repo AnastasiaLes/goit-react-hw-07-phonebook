@@ -16,8 +16,6 @@ const initialValues = {
   number: '',
 };
 
-
-
 export function NameField({listOfContacts})  {
   const [, { isLoading }] = useAddContactMutation();
   const [addContact] = useAddContactMutation();
@@ -39,7 +37,7 @@ draggable: true,
 progress: undefined,
      });
     addContact(newContact);
-    
+
     listOfContacts.find(contact => contact.name === newContact.name)
       ? alert(`${newContact.name} is already in contacts`)
       : addContact(newContact);

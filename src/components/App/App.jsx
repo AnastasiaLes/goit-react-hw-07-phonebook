@@ -18,6 +18,8 @@ export function PhoneBook() {
   const addFilter = (event) => {
     setSearch(event.currentTarget.value)
   }
+  console.log(data);
+
 
   // const formSubmitHandler = newContact => {
   //   data.find(contact => contact.name === newContact.name)
@@ -38,7 +40,7 @@ export function PhoneBook() {
        />
        {isFetching && <h2>Loading...</h2>}
        {data && <ContactList
-          listOfContacts={visibleContacts}
+          listOfContacts={visibleContacts.reverse()}
         />}
       </div>
     );
