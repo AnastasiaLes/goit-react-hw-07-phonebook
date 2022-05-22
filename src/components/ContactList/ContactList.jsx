@@ -1,27 +1,24 @@
 import { ListElement, DeleteBtn } from './ContactList.styled';
-import { useDispatch } from 'react-redux';
-import { removeContacts } from 'redux/contactsSlice';
+import { useDeleteContactMutation } from 'redux/contactsSlice';
 
-export const ContactList = ({listOfContacts}) => {
-  const dispatch = useDispatch();
+export const ContactList = ({ listOfContacts }) => {
+  const [deleteContact, { isLoading: isDeliting}] = useDeleteContactMutation()
   return (
     <div>
       <h2>Contacts</h2>
-      {listOfContacts.length > 0 && (
-        <ul>
+       <ul>
           {listOfContacts.map(contact => (
             <ListElement key={contact.id}>
               {contact.name}: {contact.number}
               <DeleteBtn
                 type="button"
-                onClick={() => dispatch(removeContacts(contact.id))}
-              >
-                Delete
+                onClick={() => deleteContact(contact.id)}
+              > {isDeliting ? 'Deliting...' : 'Delete'}
+                
               </DeleteBtn>
             </ListElement>
           ))}
         </ul>
-      )}
     </div>
   );
 };

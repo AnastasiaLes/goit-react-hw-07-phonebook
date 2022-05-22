@@ -3,6 +3,7 @@ import { Formik, Form, ErrorMessage } from 'formik';
 import { ContactField, FieldName, AddContactButton } from './Form.styled';
 import { nanoid } from 'nanoid';
 import * as yup from 'yup';
+import { useAddContactMutation } from 'redux/contactsSlice';
 
 
 const schema = yup.object().shape({
@@ -16,6 +17,7 @@ const initialValues = {
 };
 
 export function NameField({onSubmit})  {
+  const [ , {isLoading}] = useAddContactMutation();
 
   const handleSubmit = (values, { resetForm }) => {
     const { name, number } = values;
@@ -46,7 +48,7 @@ export function NameField({onSubmit})  {
           <ContactField type="tel" name="number" id={numberInputId} />
           <ErrorMessage name="number" component="div" />
 
-          <AddContactButton type="submit"> Add contact </AddContactButton>
+          <AddContactButton type="submit" disabled={isLoading}> {isLoading ? '...' : 'Add contact'}  </AddContactButton>
         </Form>
       </Formik>
     );

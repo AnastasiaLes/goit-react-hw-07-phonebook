@@ -1,36 +1,45 @@
 import { NameField } from '../Form/Form';
 import { ContactList } from '../ContactList/ContactList';
 import { FilterField } from '../Filter/filter';
-import { useSelector, useDispatch } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
-
-
+import { useGetContactsQuery, useAddContactMutation } from 'redux/contactsSlice';
+import { useState } from 'react';
 
 export function PhoneBook() {
-
-  const listOfContacts = useSelector(state => state.myContacts.contacts);
-  const searchFilter = useSelector(state => state.myContacts.filter);
-  const normalizedFilter = searchFilter.toLocaleLowerCase();
-  const visibleContacts = listOfContacts.filter(contact =>
+  const [search, setSearch] = useState('');
+  const { data, isFetching } = useGetContactsQuery();
+  const [addContact] = useAddContactMutation();
+  
+  const normalizedFilter = search.toLocaleLowerCase();
+  const visibleContacts = data?.filter(contact =>
     contact.name.toLocaleLowerCase().includes(normalizedFilter)
   );
-  const dispatch = useDispatch();
   
-  const formSubmitHandler = data => {
-    listOfContacts.find(contact => contact.name === data.name)
-      ? alert(`${data.name} is already in contacts`)
-      : dispatch(addContact(data));
+  const addFilter = (event) => {
+    setSearch(event.currentTarget.value)
+    // console.log(search)
+  }
+
+  const formSubmitHandler = newContact => {
+    data.find(contact => contact.name === newContact.name)
+      ? alert(`${newContact.name} is already in contacts`)
+      : addContact(newContact);
+    
   };
 
    return (
       <div>
        <h1>Phonebook</h1>
-      
-        <NameField onSubmit={formSubmitHandler} />
-        <FilterField />
-        <ContactList
+        {/* <Pokemon /> */}
+       <NameField
+         onSubmit={formSubmitHandler}
+       />
+       <FilterField
+         addFilter={addFilter}
+       />
+       {isFetching && <h2>Loading...</h2>}
+       {data && <ContactList
           listOfContacts={visibleContacts}
-        />
+        />}
       </div>
     );
 }
