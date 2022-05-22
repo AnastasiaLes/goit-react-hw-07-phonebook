@@ -1,14 +1,13 @@
-import { ListElement, DeleteBtn } from './ContactList.styled';
-import { useDeleteContactMutation } from 'redux/contactsSlice';
+import { ContactItem } from './ContactItem';
 
 export const ContactList = ({ listOfContacts }) => {
-  const [deleteContact, { isLoading: isDeliting}] = useDeleteContactMutation()
   return (
     <div>
       <h2>Contacts</h2>
        <ul>
-          {listOfContacts.map(contact => (
-            <ListElement key={contact.id}>
+        {listOfContacts.map(contact => (<ContactItem key={contact.id} {...contact} />))}
+            
+        {/* <ListElement key={contact.id}>
               {contact.name}: {contact.number}
               <DeleteBtn
                 type="button"
@@ -16,8 +15,8 @@ export const ContactList = ({ listOfContacts }) => {
               > {isDeliting ? 'Deliting...' : 'Delete'}
                 
               </DeleteBtn>
-            </ListElement>
-          ))}
+            </ListElement> */}
+          
         </ul>
     </div>
   );
