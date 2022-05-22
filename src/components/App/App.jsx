@@ -16,7 +16,6 @@ export function PhoneBook() {
   const addFilter = (event) => {
     setSearch(event.currentTarget.value)
   }
-  console.log(data);
 
    return (
       <div>
