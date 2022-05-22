@@ -3,12 +3,10 @@ import { ContactList } from '../ContactList/ContactList';
 import { FilterField } from '../Filter/filter';
 import { useGetContactsQuery } from 'redux/contactsSlice';
 import { useState } from 'react';
-// import {toast} from 'react-hot-toast';
 
 export function PhoneBook() {
   const [search, setSearch] = useState('');
   const { data, isFetching } = useGetContactsQuery();
-  // const [addContact] = useAddContactMutation();
   
   const normalizedFilter = search.toLocaleLowerCase();
   const visibleContacts = data?.filter(contact =>
@@ -20,18 +18,9 @@ export function PhoneBook() {
   }
   console.log(data);
 
-
-  // const formSubmitHandler = newContact => {
-  //   data.find(contact => contact.name === newContact.name)
-  //     ? alert(`${newContact.name} is already in contacts`)
-  //     : addContact(newContact);
-    
-  // };
-
    return (
       <div>
        <h1>Phonebook</h1>
-        {/* <Pokemon /> */}
        <NameField
          listOfContacts={data}
        />
